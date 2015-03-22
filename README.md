@@ -9,11 +9,13 @@ If you have any problem to use this tool. Please open a issue and I will solve i
 How to use this tool
 --------------------
 
+If you have a PHP file want to be compressed. It will be a input file which maybe has a name input.php. And you must specific a output file name which maybe call output.php. So you can execute the command like the next line.
+
 * sudo php phpcompress.php input.php output.php
 
 <br />
 
-Give you a example. If I have a PHP file which has the following script.
+Let's see a example. If I have a PHP file which has the following script.
 
 <pre>
 $id = 1;
