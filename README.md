@@ -46,7 +46,7 @@ class userDb {
 }
 </pre>
 
-Then I execute this compress tool.
+Then I can execute this tool to compress the PHP script.
 
 The result will be like the following script.
 
