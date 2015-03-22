@@ -29,12 +29,12 @@ $r = file_get_contents($file);
 //echo "output = ".$outputfile."\n";
 $ck=array(
     1 
+    ,0
     ,1
     ,1
     ,1
     ,1
-    ,1
-    ,1 //用空白打亂
+    ,0 //用空白打亂
 );
 $phpCom=new php_compress();
 $phpCom->setting($ck);
