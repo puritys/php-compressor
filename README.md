@@ -15,7 +15,6 @@ How to use this tool
 
 Give you a example. If I have a PHP file which has the following script.
 
-Original PHP File
 <pre>
 $id = 1;
 $sorting = "DESC";
