@@ -20,9 +20,9 @@ Setting about PHP Compressor
 
 The first parameter in php_compress class.
 
-1: Compress every thing in PHP file.
-2: Only compress variable in PHP function.
-3: Only remove comments
+1. Compress every thing in PHP file.
+2. Only compress variable in PHP function.
+3. Only remove comments
 
 
 
