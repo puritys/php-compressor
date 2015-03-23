@@ -1,10 +1,7 @@
 <?
 $rrt=dirname(__FILE__);
 require_once($rrt.'/core.php');
-/*
-mysql_connect('localhost','pts','p1u2r3i4t5y6s7');
-mysql_select_db('accounting');*/
-//中文php
+
 $GLOBALS['DB_VB'] = array();
 class php_compress extends compress_core
 {
@@ -35,18 +32,17 @@ class php_compress extends compress_core
 		$this->nocompress=0;
 		$this->edit_fuc_vb=1;
 		$this->only_compress_comment=0;
-		if($php==1){//壓全部
+		if ($php==1) {//壓全部
 			$this->edit_global=1;
 			$this->edit_nm_vb=1;
 			$this->edit_class=1;
 			$this->edit_func=1;
-		} else if($php==3){//只壓func
+		} else if($php==3) {//只壓func
 			$this->edit_global=0;
 			$this->edit_nm_vb=0;
 			$this->edit_class=0;
 			$this->edit_func=1;
-		}
-		else if($php==2){ //都不壓 移除註解
+		} else if($php==2) { //都不壓 移除註解
 			$this->edit_global=0;
 			$this->edit_nm_vb=0;
 			$this->edit_fuc_vb=0;//不壓function 變數
@@ -54,8 +50,7 @@ class php_compress extends compress_core
 			$this->edit_func=0;
 			$this->only_compress_comment=1;
 			$this->nocompress=0;
-		}
-		else{
+		} else {
 			echo "warning: php no compress\n";
 			$this->edit_global=0;
 			$this->edit_nm_vb=0;
@@ -63,9 +58,11 @@ class php_compress extends compress_core
 			$this->edit_func=0;
 			$this->nocompress=1;
 		}
+
 		if(isset($GLOBALS['ck'][6])){
 			$this->scramble=$GLOBALS['ck'][6];
 		}
+
 		if(isset($ck[1]) ){
 			$this->scramble=$ck[1];
 		}
@@ -89,12 +86,6 @@ class php_compress extends compress_core
                     $ii++;
                 }
             }
-			/*$q='select * from encode_vb';
-			$re=mysql_query($q);
-			while($a=mysql_fetch_array($re)){
-				$n=sizeof($GLOBALS['DB_VB']);
-				$GLOBALS['DB_VB'][$n]=$a;
-			}*/
 		}
 	 
 	}/*}}}*/
@@ -120,7 +111,7 @@ class php_compress extends compress_core
 		return $this->new;
 	}/*}}}*/
 	
-    public function removePerf($ct) {
+    public function removePerf($ct) {/*{{{*/
         $ay = preg_split('/[\n\r]+/', $ct);
         $reg = "/[\s]*perfUtil::[^\n\r]+/";
         $content = "";
@@ -132,9 +123,10 @@ class php_compress extends compress_core
             $isFirstLine = false;
         }
         return $content;
-    }
+    }/*}}}*/
+
 	//抓變數 funtion 開頭 class
-	private function getStart(){
+	private function getStart() {/*{{{*/
 		$ok=0; // 1開始php 0 等止php
 		$quoten=0; // 0沒事 1字串
 		$quote='';
@@ -145,16 +137,14 @@ class php_compress extends compress_core
 			if( $this->letterCheck("normal",$quoten) ){
 				 //func 內做
 				 continue;
-			}
-			else if($c=='<' && $quoten==0 ){
+			} else if($c=='<' && $quoten==0 ){
 				if(substr($this->ct,$this->i+1,1)=='?'){
 					$ok=1;
 					$this->new.=$c;
 					$this->i++;
 					continue;
 				}
-			}
-			else if($c=='?' && $quoten==0 ){
+			} else if($c=='?' && $quoten==0 ){
 				if(substr($this->ct,$this->i+1,1)=='>'){
 					$ok=0;
 					$this->new.=$c;
@@ -206,43 +196,32 @@ class php_compress extends compress_core
 				else{
 					$this->new.=$c;
 				}
-			}
-			else if(preg_match("/[\n\r]/",$c) && $quoten==0 && substr($this->ct,$this->i-1,1)==';'){
+			} else if(preg_match("/[\n\r]/",$c) && $quoten==0 && substr($this->ct,$this->i-1,1)==';'){
 				$this->new.=$this->br();
-			}
-			else if(preg_match("/[\n\r]/",$c) && $quoten==0){
+			} else if(preg_match("/[\n\r]/",$c) && $quoten==0){
 				if($this->scramble==1){
 					$this->new.=$this->scrambleBR();
 				}
 				else{
 					$this->new.=' ';
 				}
-			}
-			else if(preg_match("/[ 	]/",$c) && $quoten==0){//去掉空白
+			} else if(preg_match("/[ 	]/",$c) && $quoten==0){
+                //去掉空白 remove extra space
 				$this->new.=$this->space();
-			}
-			else if($c=='f' && $quoten==0 && $this->edit_func==1){//function
-			
-				if(ord(substr($this->ct,$this->i+8,1))!=32){
-				
-					$this->new.=$c;
-				}
-				else if(strtolower(substr($this->ct,$this->i,8))=='function'){
+			} else if($c=='f' && $quoten==0 && $this->edit_func==1){
+                //function
+				if (ord(substr($this->ct,$this->i+8,1))!=32) {
+					$this->new .= $c;
+				} else if(strtolower(substr($this->ct,$this->i,8))=='function') {
 					$this->getFunction(0);//不編碼
-				}
-				else{
+				} else {
 					$this->new.=$c;
-					
 				}
-			}
-			else if($c=='c' && $quoten==0){
-			//class 開頭是　c的才算 uis_class不算 後面要接空白
+			} else if($c=='c' && $quoten==0) {
 			
-				if(ord(substr($this->ct,$this->i+5,1))!=32){
-				
+				if(ord(substr($this->ct,$this->i+5,1)) ! =32){
 					$this->new.=$c;
-				}
-				else{
+				} else{
 					if(strtolower(substr($this->ct,$this->i,5))=='class'){
 						$this->getClass();
 					}
@@ -250,14 +229,13 @@ class php_compress extends compress_core
 						$this->new.=$c;
 					}
 				}
-			}
-			else{
+			} else {
 				$this->new.=$c;
 			}
 			$prec=$c;
 			$this->i++;
 		}
-	}
+	}/*}}}*/
 	
 	//*every function start */
 	private function fucinit(){
@@ -265,14 +243,15 @@ class php_compress extends compress_core
 		$this->cleanFucVB();
 		$this->fuc_vb_ay=array();
 	}
+
 	//function 
-	private function getFunction($encode=1){
+	private function getFunction($encode=1) {
 		if($this->edit_class==0){$encode=0;}
 		
 		$this->fucinit();
 		$s=substr($this->ct,$this->i,8);
 		$this->i+=8;
-		$this->new.=$s.' ';//function
+		$this->new .= $s.' ';//function
 		if($this->only_compress_comment==1){
 			return '';
 		}
@@ -280,6 +259,7 @@ class php_compress extends compress_core
 		while( ($c=substr($this->ct,$this->i,1))==' ' ){
 			$this->i++;
 		}
+
 		$name='';
 		
 		while( ($c=substr($this->ct,$this->i,1))!='(' ){
@@ -289,8 +269,7 @@ class php_compress extends compress_core
 		
 		$name_en = $name;
 		if ($encode == 1) {//class 加密
-			$name_en=$this->getEncodeClassFunction($name_en);
-
+			$name_en = $this->getEncodeClassFunction($name_en);
 		}
 	 
 		$this->new.=$name_en.'(';//fuc name

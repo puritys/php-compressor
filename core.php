@@ -187,7 +187,7 @@ class compress_core{
 	//一個字一個字檢查
 	function letterCheck($type="normal",$quoten=0){
 		$c=substr($this->ct,$this->i,1);
-		if($quoten==0){//非註解
+		if ($quoten==0) {//非註解
 			switch($c){
 				case ':':
 					$c2=substr($this->ct,$this->i+1,1);
