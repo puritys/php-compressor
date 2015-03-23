@@ -1049,11 +1049,6 @@ class php_compress extends compress_core
 		else{
 			$s=$this->getDB_vb($n,$this->vb_trans_prefix);
 			return $s;
-			/*
-			array_push($this->vb_trans,$n);
-			$n2=sizeof($this->vb_trans);
-			return $this->vb_trans_prefix.$n2;
-			*/
 		}
 	}
 	
@@ -1072,10 +1067,6 @@ class php_compress extends compress_core
 		else{
 			$s=$this->getDB_vb($n,$this->fuc_vb_trans_prefix);
 			return $s;
-			/*
-			array_push($this->fuc_vb_trans,$n);
-			$n2=sizeof($this->fuc_vb_trans);
-			return $this->fuc_vb_trans_prefix.$n2;*/
 		}
 	}
 	
@@ -1105,7 +1096,7 @@ class php_compress extends compress_core
 	function cleanExp2(){
 		$this->i+=1;
 		while(eregi("[\n\r]",substr($this->ct,$this->i,1) )<=0 && $this->i<$this->n){
-		//echo substr($this->ct,$this->i,1) .'-<br />';
+		    //echo substr($this->ct,$this->i,1) .'-<br />';
 			$this->i++;
 		}
 	}
@@ -1160,15 +1151,11 @@ class php_compress extends compress_core
 		$GLOBALS['DB_VB'][$n]['vbname']=$nm;
 		$ed=$prefix.$n;
 		$GLOBALS['DB_VB'][$n]['encode']=$ed;
-		//echo $n.' '.$nm.' '.$GLOBALS['DB_VB'][$n]['vbname']."\n";sleep(1);
 		$ds=','.$nm.':'.$ed;
 
 		$f=fopen($this->filedb,'a');
 		fwrite($f,$ds,strlen($ds));
 		fclose($f);
-		//echo $ds."\n";sleep(1);
-		//$q='insert into encode_vb(`vbname`,`encode`)values(\''.$nm.'\',\''.$ed.'\');';
-		//mysql_query($q);
 		return $GLOBALS['DB_VB'][$n]['encode'];
 	}/*}}}*/
 	
@@ -1225,8 +1212,8 @@ class php_compress extends compress_core
 $php_compress=new php_compress();
 
 $rt=dirname(__FILE__);
-//$file=$rt.'/../a/_quickphp.php';
-//測試的資料
+
+//Testing 測試的資料
 /*
 $file=$rt.'/../a/a.php';
 $f=fopen($file,'r');
