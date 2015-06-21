@@ -91,7 +91,8 @@ class php_compress extends compress_core
 	}/*}}}*/
 
 	public function compress($ct){/*{{{*/
-		if($this->only_compress_comment==1){//只刪除註解
+		if($this->only_compress_comment==1) {//只刪除註解
+            echo "Only remove comments \n";
 			$ct = $this->removeAllComment($ct);
             $ct = $this->removePerf($ct);
 			return $ct;
@@ -219,7 +220,7 @@ class php_compress extends compress_core
 				}
 			} else if($c=='c' && $quoten==0) {
 			
-				if(ord(substr($this->ct,$this->i+5,1)) ! =32){
+				if(ord(substr($this->ct,$this->i+5,1)) != 32){
 					$this->new.=$c;
 				} else{
 					if(strtolower(substr($this->ct,$this->i,5))=='class'){
@@ -1167,7 +1168,7 @@ class php_compress extends compress_core
 		for($i=0;$i<$n;$i++){
 			$c=substr($ct,$i,1);
 			if( $c=='#' || ( $c=='/' && substr($ct,$i+1,1)=='/' ) ){ //刪除註解
-				if($quoten==0){
+				if($quoten == 0){
 					$i++;
 					while(!preg_match("/[\n\r]/", substr($ct,$i,1) ) && $i<$n){
 						//echo substr($this->ct,$this->i,1) .'-<br />';
@@ -1188,8 +1189,11 @@ class php_compress extends compress_core
 						
 					}
 				}
-			}
-			else if(preg_match("/['\"]/",$c)){
+			} else if(preg_match("/['\"]/",$c)) {
+                if ($i >= 1 && substr($ct, $i - 1, 1) === '\\') {
+                    $ct_ans .= $c;
+                    continue;
+                }
 				$k=0;
 				if($quoten==0){
 					$quoten=1;

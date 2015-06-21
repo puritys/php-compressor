@@ -9,17 +9,12 @@ if ( $_SERVER['argc'] < 3) {
 $file = $_SERVER['argv'][1];
 $outputfile = $_SERVER['argv'][2];
 
-$type = 2;
 
 if (isset($_SERVER['argv'][3])) {
-    switch ($_SERVER['argv'][3]){
-        case "c1":
-            $type = 2;
-            break;
-    }
+    $type = $_SERVER['argv'][3];
 }
 
-if (!is_file($file)) {
+if (!is_file($file) || empty($outputfile)) {
     echo "php compress , file is not exist.";
     exit(1);
 }
@@ -27,15 +22,28 @@ $r = file_get_contents($file);
 
 //echo "input = ".$file."\n";
 //echo "output = ".$outputfile."\n";
-$ck=array(
-    1 
-    ,0
-    ,1
-    ,1
-    ,1
-    ,1
-    ,0 //用空白打亂
-);
+if ($type === "c1") {
+    $ck = array(
+        2
+        ,1
+        ,0
+        ,0
+        ,0
+        ,0
+        ,0
+    );
+
+} else {
+    $ck = array(
+        1 
+        ,0
+        ,1
+        ,1
+        ,1
+        ,1
+        ,0 //用空白打亂
+    );
+}
 $phpCom=new php_compress();
 $phpCom->setting($ck);
 $data=$phpCom->compress($r);
